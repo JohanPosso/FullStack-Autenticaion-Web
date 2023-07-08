@@ -15,16 +15,28 @@ export const useStateSaludo = defineStore("saludo", () => {
     }
   };
 
-  const listaCards = async () => {
+  const register = async (name, email, role, password) => {
     try {
-      const data = await api.get("/todo");
-      return data;
+      const result = await api.post("/crear", {
+        name,
+        email,
+        role,
+        password,
+      });
+      console.log(result.data);
     } catch (error) {
       console.log(error);
     }
-
-    // .catch((error) => console.log(error));
   };
 
-  return { login, listaCards };
+  const listaCards = async () => {
+    try {
+      const data = await api.get("/todo");
+      result(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return { login, register, listaCards };
 });

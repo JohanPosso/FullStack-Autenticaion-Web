@@ -33,5 +33,21 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
 
+  const data = JSON.parse(localStorage.getItem("data"));
+  const role = data?.role;
+  Router.beforeEach((to, from, next) => {
+    if (!to.meta.requiresAuth) {
+      next();
+    } else {
+      // Si la ruta no requiere autenticación o el usuario está autenticado,
+      // permite el acceso a la ruta solicitada
+      if (role === process.env.ROLE) {
+        next();
+      }
+    }
+    if (!to.meta.requiresAuth) {
+      next();
+    }
+  });
   return Router;
 });
