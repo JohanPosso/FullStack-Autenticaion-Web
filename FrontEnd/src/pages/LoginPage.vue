@@ -1,8 +1,10 @@
 <template>
   <q-page padding class="row justify-center">
-    <div class="col-12 col-md-4 col-sm-6">
-      <h2>Login</h2>
-      <div class="q-pa-md" style="max-width: 400px">
+    <q-img src="../../public/neon.png" class="" style="width: 50%" />
+
+    <div class="col-12 col-md-4 col-sm-6 q-gutter-xl">
+      <div class="q-pa-md" style="max-width: 400px; text-align: center">
+        <q-img src="../../public/retrato.png" class="" style="width: 50%" />
         <q-form @submit.prevent="redirect" class="q-gutter-md">
           <q-input
             filled
@@ -49,10 +51,8 @@ import { useStateSaludo } from "../stores/saludo-store";
 import { useQuasar } from "quasar";
 
 export default {
-  setup() {
-    const $q = useQuasar();
-  },
   data() {
+    // $q.dark.toggle();
     return {
       name: null,
       password: null,
@@ -68,7 +68,6 @@ export default {
         this.redirect();
         this.$q.loading.hide();
       }, 500);
-
       const userData = useStateSaludo();
       userData.login(this.name, this.password);
     },
@@ -77,7 +76,9 @@ export default {
       this.password = null;
     },
     redirect() {
-      this.$router.push("/listado");
+      setTimeout(() => {
+        this.$router.push("/listado");
+      }, 700);
     },
   },
 };

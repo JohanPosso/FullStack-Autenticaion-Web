@@ -24,4 +24,36 @@ const saludo = async (req, res) => {
       res.json(err);
     });
 };
-module.exports = { createUser, saludo };
+
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await User.destroy({
+      where: {
+        id,
+      },
+    });
+    res.json({ msg: "Usuario eliminado exitosamente!" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const editUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email, role, password } = req.body;
+    await User.update(
+      { name, email, role, password },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+    res.json({ msg: "Usuario editado exitosamente!" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+module.exports = { createUser, saludo, deleteUser, editUser };

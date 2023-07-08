@@ -1,24 +1,23 @@
 <template>
-  <div>
-    <q-page padding class="row justify-center">
-      <div class="col-12 col-md-4 col-sm-6">
-        <q-card class="my-card">
-          <q-card-section class="bg-primary text-white">
-            <div class="text-h6">Titulo</div>
-            <div class="text-subtitle2">by John Doe</div>
-          </q-card-section>
-        </q-card>
-      </div>
-    </q-page>
+  <div class="q-pa-md row items-start q-gutter-md">
+    <q-card v-for="(data, index) in prueba()" :key="index" class="my-card">
+      <q-card-section class="bg-primary text-white">
+        <div class="text-h6">{{ data.name }}</div>
+        <div class="text-subtitle2">{{ data.email }}</div>
+      </q-card-section>
+
+      <q-separator />
+
+      <q-card-actions align="right">
+        <q-btn flat>Action 1</q-btn>
+        <q-btn flat>Action 2</q-btn>
+      </q-card-actions>
+    </q-card>
   </div>
 </template>
 
 <script>
-import { useStateSaludo } from "../stores/saludo-store";
-const usertListado = async () => {
-  const result = (await useStateSaludo().listaCards()).data;
-  return result;
-};
+import { api } from "src/boot/axios";
 
 export default {
   data() {
@@ -30,14 +29,31 @@ export default {
           return role;
         }
       },
+      datosApi: [],
     };
   },
+  async created() {
+    const response = await api.get("/todo");
+    this.datosApi = response.data;
+  },
+
   methods: {
     logout() {
       if (this.Authenticated()) {
         localStorage.removeItem("data");
       }
       this.$router.push("/login");
+    },
+    prueba() {
+      const datos = this.datosApi.map((e) => {
+        return {
+          id: e.id,
+          name: e.name,
+          email: e.email,
+          createdAt: e.createdAt,
+        };
+      });
+      return datos;
     },
   },
 };

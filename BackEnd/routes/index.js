@@ -8,11 +8,13 @@ function allRoutes(app) {
   router.post("/token", loginController);
   router.post(
     "/crear",
-    tokenMiddleware,
-    roleMiddleware,
+    // tokenMiddleware,
+    // roleMiddleware,
     userController.createUser
   );
   router.get("/todo", userController.saludo);
+  router.post("/delete/:id", userController.deleteUser);
+  router.post("/edit/:id", userController.editUser);
   app.use(router);
 }
 
