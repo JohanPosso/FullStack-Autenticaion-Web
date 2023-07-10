@@ -1,6 +1,6 @@
 <template>
   <q-page padding class="row justify-center">
-    <q-img src="../../public/brap.png" class="" style="width: 50%" />
+    <q-img src="/brap.png" class="" style="width: 50%" />
     <div
       class="col-12 col-md-4 col-sm-6 q-gutter-xl"
       style="align-self: center"
@@ -10,7 +10,7 @@
         @reset="onReset"
         class="q-gutter-md text-center"
       >
-        <q-img src="../../public/triangulo.png" class="" style="width: 50%" />
+        <q-img src="/triangulo.png" class="" style="width: 50%" />
 
         <q-input
           filled

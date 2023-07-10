@@ -1,20 +1,9 @@
 import { defineStore } from "pinia";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
+import { LocalStorage } from "quasar";
 
 export const useStateSaludo = defineStore("saludo", () => {
-  const login = async (email, password) => {
-    try {
-      const result = await api.post("/token", {
-        email,
-        password,
-      });
-      window.localStorage.setItem("data", JSON.stringify(result.data));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const register = async (name, email, role, password) => {
     try {
       const result = await api.post("/crear", {
@@ -38,5 +27,9 @@ export const useStateSaludo = defineStore("saludo", () => {
     }
   };
 
-  return { login, register, listaCards };
+  const dataMemory = () => {
+    const data = JSON.parse(LocalStorage.getItem("data"));
+    return data;
+  };
+  return { register, listaCards, dataMemory };
 });
