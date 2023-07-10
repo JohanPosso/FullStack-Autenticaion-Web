@@ -18,12 +18,12 @@
 
 <script>
 import { api } from "src/boot/axios";
-
+import { LocalStorage } from "quasar";
 export default {
   data() {
     return {
       Authenticated() {
-        const data = JSON.parse(localStorage.getItem("data"));
+        const data = JSON.parse(LocalStorage.getItem("data"));
         const role = data?.role;
         if (role) {
           return role;

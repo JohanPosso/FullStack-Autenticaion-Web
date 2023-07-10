@@ -13,8 +13,8 @@ function allRoutes(app) {
     userController.createUser
   );
   router.get("/todo", userController.saludo);
-  router.post("/delete/:id", userController.deleteUser);
-  router.post("/edit/:id", userController.editUser);
+  router.delete("/delete/:id", userController.deleteUser);
+  router.put("/edit/:id", userController.editUser);
   app.use(router);
 }
 

@@ -6,6 +6,8 @@ import {
   createWebHashHistory,
 } from "vue-router";
 import routes from "./routes";
+import { LocalStorage } from "quasar";
+import { useStateSaludo } from "../stores/saludo-store";
 
 /*
  * If not building with SSR mode, you can
@@ -32,22 +34,27 @@ export default route(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
+  const userData = useStateSaludo();
 
-  const data = JSON.parse(localStorage.getItem("data"));
-  const role = data?.role;
   Router.beforeEach((to, from, next) => {
-    if (!to.meta.requiresAuth) {
-      next();
+    const requiresAuth = to.matched.some((route) => route.meta.requiresAuth);
+    const userRole = userData.dataMemory();
+    const roleRequiresAuth = to.meta.roles.find((e) => e === userRole?.role);
+
+    if (requiresAuth && !userRole?.role) {
+      // Si la ruta requiere autenticación y no hay un rol de usuario almacenado, redirige a la página de inicio de sesión
+      next("/login");
     } else {
-      // Si la ruta no requiere autenticación o el usuario está autenticado,
-      // permite el acceso a la ruta solicitada
-      if (role === process.env.ROLE) {
+      // Si la ruta requiere autenticación y hay un rol de usuario almacenado, verifica el rol
+      if (requiresAuth && roleRequiresAuth !== userRole?.role) {
+        // Si el rol de usuario no coincide con el requerido para la ruta, redirige a una página de acceso no autorizado
+        next("/");
+      } else {
+        // De lo contrario, permite la navegación
         next();
       }
     }
-    if (!to.meta.requiresAuth) {
-      next();
-    }
   });
+
   return Router;
 });

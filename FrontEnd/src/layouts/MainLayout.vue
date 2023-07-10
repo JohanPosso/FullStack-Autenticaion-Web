@@ -6,26 +6,33 @@
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
           </q-avatar>
-          {{ nameInformation() || "Software Company" }}
+          {{ inputText || "Software Company" }}
         </q-toolbar-title>
         <div class="q-gutter-xs">
           <router-link to="/login">
             <q-btn
-              v-if="!nameInformation()"
+              v-if="!nameInformation"
               style="background: #10a97e; color: white"
               label="Login"
             />
           </router-link>
           <router-link to="/register">
             <q-btn
-              v-if="!nameInformation()"
+              v-if="!nameInformation"
               style="background: #cc6f0d; color: white"
               label="Register"
             />
           </router-link>
+          <router-link to="/dashboard">
+            <q-btn
+              v-if="nameInformation"
+              style="background: #a809e7; color: white"
+              label="Dashboard"
+            />
+          </router-link>
           <router-link to="" @click="logout">
             <q-btn
-              v-if="nameInformation()"
+              v-if="nameInformation"
               style="background: #e70909; color: white"
               label="Logout"
             />
@@ -41,28 +48,35 @@
 </template>
 
 <script>
-const data = JSON.parse(localStorage.getItem("data"));
+import { ref, computed } from "vue";
+import { LocalStorage } from "quasar";
+import { useStateSaludo } from "../stores/saludo-store";
+import { useRouter } from "vue-router";
 
 export default {
-  methods: {
-    logout() {
-      const role = data?.role;
+  setup() {
+    const data = JSON.parse(LocalStorage.getItem("data") || "{}");
+
+    const nameInformation = computed(() => data.name);
+    const router = useRouter();
+    const logout = () => {
+      const role = data.role;
       if (role) {
-        localStorage.removeItem("data");
+        LocalStorage.remove("data");
+        data.name = "";
       }
-      this.$router.push("/login");
-    },
-    nameInformation() {
-      const name = data?.name;
-      if (name) {
-        return name;
-      }
-    },
-  },
-  computed: {
-    toby() {
-      return this.nameInformation;
-    },
+      router.push("/login");
+    };
+
+    const alerta = () => {
+      console.log(nombreUser);
+    };
+
+    return {
+      logout,
+      nameInformation,
+      alerta,
+    };
   },
 };
 </script>

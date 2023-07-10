@@ -76,8 +76,9 @@ export default {
   },
 
   async created() {
-    const response = await api.get("/todo");
-    this.datosApi = response.data;
+    const allUser = await api.get("/todo");
+    // const deleteUser = await api.delete(`/delete/${}`);
+    this.datosApi = allUser.data;
   },
   methods: {
     prueba() {
@@ -91,6 +92,11 @@ export default {
         };
       });
       return datos;
+    },
+    identifier() {
+      const id = this.prueba().map((e) => e.id);
+      return id;
+      console.log(id);
     },
   },
 };
