@@ -38,19 +38,21 @@ export default route(function (/* { store, ssrContext } */) {
 
   Router.beforeEach((to, from, next) => {
     const requiresAuth = to.matched.some((route) => route.meta.requiresAuth);
-    const userRole = userData.dataMemory();
-    const roleRequiresAuth = to.meta.roles.find((e) => e === userRole?.role);
+    const userRole = LocalStorage.getItem("role");
 
-    if (requiresAuth && !userRole?.role) {
+    const roleRequiresAuth = to.meta.roles.find((e) => e === userRole);
+
+    if (requiresAuth && !userRole) {
       // Si la ruta requiere autenticación y no hay un rol de usuario almacenado, redirige a la página de inicio de sesión
       next("/login");
     } else {
       // Si la ruta requiere autenticación y hay un rol de usuario almacenado, verifica el rol
-      if (requiresAuth && roleRequiresAuth !== userRole?.role) {
-        // Si el rol de usuario no coincide con el requerido para la ruta, redirige a una página de acceso no autorizado
+      if (requiresAuth && roleRequiresAuth !== userRole) {
         next("/");
+        // Si el rol de usuario no coincide con el requerido para la ruta, redirige a una página de acceso no autorizado
       } else {
         // De lo contrario, permite la navegación
+
         next();
       }
     }

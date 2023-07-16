@@ -15,19 +15,25 @@ const routes = [
         meta: { requiresAuth: false },
         component: () => import("pages/RegisterPage.vue"),
       },
-      {
-        path: "/listado",
-        name: "listado",
-        meta: { requiresAuth: true, roles: ["admin", "user"] }, // Indicar que la ruta está protegida y requiere autenticación
-        component: () => import("pages/ListadoPage.vue"),
-      },
-      {
-        path: "/dashboard",
-        component: () => import("pages/TableAdminPage.vue"),
-        meta: { requiresAuth: true, roles: ["admin"] },
-      },
     ],
   },
+  {
+    path: "/listado",
+    name: "listado",
+    meta: { requiresAuth: true, roles: ["admin", "user"] }, // Indicar que la ruta está protegida y requiere autenticación
+    component: () => import("pages/ListadoPage.vue"),
+  },
+  {
+    path: "/dashboard",
+    component: () => import("pages/TableAdminPage.vue"),
+    meta: { requiresAuth: true, roles: ["admin"] },
+  },
+  {
+    path: "/prueba",
+    component: () => import("pages/PruebaPage.vue"),
+    meta: { requiresAuth: true, roles: ["admin"] },
+  },
+
   {
     path: "/:catchAll(.*)*",
     component: () => import("pages/ErrorNotFound.vue"),

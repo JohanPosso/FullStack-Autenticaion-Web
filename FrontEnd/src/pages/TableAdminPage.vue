@@ -1,19 +1,21 @@
 <template>
-  <div class="q-pa-md">
-    <q-table
-      title="Admin Dashboard"
-      :rows="prueba()"
-      :columns="columns"
-      row-key="id"
-    >
-      <template v-slot:body-cell-actions="">
-        <div class="q-gutter-xs text-center">
-          <q-btn color="primary" label="Edit" />
-          <q-btn color="red" label="Delete" />
-        </div>
-      </template>
-    </q-table>
-  </div>
+  <NavbarMenu>
+    <div class="q-pa-md">
+      <q-table
+        title="Admin Dashboard"
+        :rows="prueba()"
+        :columns="columns"
+        row-key="id"
+      >
+        <template v-slot:body-cell-actions="">
+          <div class="q-gutter-xs text-center">
+            <q-btn color="primary" label="Edit" />
+            <q-btn color="red" label="Delete" />
+          </div>
+        </template>
+      </q-table>
+    </div>
+  </NavbarMenu>
 </template>
 
 <script>
@@ -66,8 +68,9 @@ const columns = [
 ];
 
 import { api } from "src/boot/axios";
-
+import NavbarMenu from "../components/NavbarComponent.vue";
 export default {
+  components: { NavbarMenu },
   data() {
     return {
       columns,
@@ -96,7 +99,6 @@ export default {
     identifier() {
       const id = this.prueba().map((e) => e.id);
       return id;
-      console.log(id);
     },
   },
 };
