@@ -50,17 +50,15 @@
 import { ref } from "vue";
 import { LocalStorage, Loading, Notify } from "quasar";
 import { api } from "src/boot/axios";
-import router from "src/router";
-
+import { useStateSaludo } from "src/stores/saludo-store";
+const userData = useStateSaludo();
 export default {
   data() {
-    const email = ref(null);
-    const password = ref(null);
-
+    const email = ref("johan@hotmail.com");
+    const password = ref("123");
     const onSubmit = async () => {
       setTimeout(() => {
-        const data = JSON.parse(LocalStorage.getItem("data"));
-        if (data?.role) {
+        if (userData.userRole) {
           Loading.show();
 
           Notify.create({
@@ -81,12 +79,7 @@ export default {
 
     const redirect = async () => {
       try {
-        const result = await api.post("/token", {
-          email: email.value,
-          password: password.value,
-        });
-
-        LocalStorage.set("data", JSON.stringify(result.data));
+        userData.loginUser(email.value, password.value);
       } catch (error) {
         if (error.response.data.error) {
           Notify.create({

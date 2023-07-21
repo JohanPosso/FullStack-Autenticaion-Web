@@ -1,59 +1,40 @@
 <template>
-  <div class="q-pa-md row items-start q-gutter-md">
-    <q-card v-for="(data, index) in prueba()" :key="index" class="my-card">
-      <q-card-section class="bg-primary text-white">
-        <div class="text-h6">{{ data.name }}</div>
-        <div class="text-subtitle2">{{ data.email }}</div>
-      </q-card-section>
-
-      <q-separator />
-
-      <q-card-actions align="right">
-        <q-btn flat>Action 1</q-btn>
-        <q-btn flat>Action 2</q-btn>
-      </q-card-actions>
-    </q-card>
-  </div>
+  <NavbarMenu>
+    <div class="row q-pa-md justify-center">
+      <q-uploader
+        style="max-width: 300px"
+        url="http://localhost:3000/upload"
+        label="Restricted to images"
+        max-files="1"
+        accept=".jpg, image/*"
+        @rejected="onRejected"
+      />
+    </div>
+    <div class="q-pa-md row items-start q-gutter-md">
+      <q-card style="width: 15%" class="my-card"> </q-card>
+    </div>
+  </NavbarMenu>
 </template>
 
 <script>
 import { api } from "src/boot/axios";
 import { LocalStorage } from "quasar";
+import NavbarMenu from "../components/NavbarComponent.vue";
+import { useQuasar, Notify } from "quasar";
+import { useStateSaludo } from "src/stores/saludo-store";
+const userData = useStateSaludo();
 export default {
+  components: { NavbarMenu },
+
   data() {
-    return {
-      Authenticated() {
-        const data = JSON.parse(LocalStorage.getItem("data"));
-        const role = data?.role;
-        if (role) {
-          return role;
-        }
-      },
-      datosApi: [],
-    };
-  },
-  async created() {
-    const response = await api.get("/todo");
-    this.datosApi = response.data;
+    return {};
   },
 
-  methods: {
-    logout() {
-      if (this.Authenticated()) {
-        localStorage.removeItem("data");
-      }
-      this.$router.push("/login");
-    },
-    prueba() {
-      const datos = this.datosApi.map((e) => {
-        return {
-          id: e.id,
-          name: e.name,
-          email: e.email,
-          createdAt: e.createdAt,
-        };
-      });
-      return datos;
+  computed: {
+    photoList() {
+      userData.allPhotos();
+      console.log(userData.allphotoUser, "johan");
+      return null;
     },
   },
 };

@@ -2,10 +2,27 @@ const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 
 const createUser = (req, res) => {
-  const { name, email, role, password } = req.body;
+  let { name, email, role, password } = req.body;
   const passwordCrypt = bcrypt.hashSync(password, 10); // Cifrar el password
 
-  const createUser = User.create({ name, email, role, password: passwordCrypt })
+  switch (role) {
+    case "admin":
+      role = 1;
+      break;
+    case "user":
+      role = 2;
+      break;
+    case "invited":
+      role = 3;
+      break;
+  }
+
+  const createUser = User.create({
+    name,
+    email,
+    RoleIdRole: role,
+    password: passwordCrypt,
+  })
 
     .then((createUser) => {
       res.json({ message: "Usuario creado exitosamente", createUser });

@@ -1,12 +1,14 @@
 const User = require("../models/user.model");
+const Role = require("../models/role.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const loginUser = async (req, res) => {
+const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ where: { email } });
+    const roles = await Role.findOne({ where: { id_role: user.RoleIdRole } });
     const desCryptPassword = bcrypt.compareSync(password, user.password);
 
     if (!desCryptPassword)
@@ -15,20 +17,28 @@ const loginUser = async (req, res) => {
     if (!user) return res.status(404).json({ error: "Usuario no encontrado" });
 
     const token = jwt.sign(
-      { name: user.name, email: user.email, role: user.role },
+      { name: user.name, email: user.email, role: roles.role_name },
       "secret",
       { expiresIn: "1h" }
     );
-    res.header("token", token).json({
+    // Cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+    });
+
+    // JWT
+    res.json({
       name: user.name,
       email: user.email,
-      role: user.role,
+      role: roles.role_name,
       token: token,
     });
+
+    next();
   } catch (error) {
     console.error("Error al encontrar el usuario:", error);
     res.status(500).json({ error: "Error al encontrar el usuario" });
   }
 };
 
-module.exports = loginUser;
+module.exports = { loginUser };
