@@ -24,6 +24,7 @@ const loginUser = async (req, res, next) => {
     // Cookie
     res.cookie("token", token, {
       httpOnly: true,
+      maxAge: 3600000,
     });
 
     // JWT
