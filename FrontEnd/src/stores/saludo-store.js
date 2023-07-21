@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
 import { LocalStorage } from "quasar";
+
 export const useStateSaludo = defineStore("saludo", () => {
   const userName = ref(null);
   const userRole = ref(null);
@@ -15,9 +16,7 @@ export const useStateSaludo = defineStore("saludo", () => {
         email,
         password,
       });
-      // userName.value = token.data.name;
-      // userRole.value = token.data.role;
-      // userToken.value = token.data.token;
+
       LocalStorage.set("name", token.data.name);
       LocalStorage.set("token", token.data.token);
       LocalStorage.set("role", token.data.role);

@@ -16,7 +16,6 @@ const createUser = (req, res) => {
       role = 3;
       break;
   }
-  console.log(role);
 
   const createUser = User.create({
     name,

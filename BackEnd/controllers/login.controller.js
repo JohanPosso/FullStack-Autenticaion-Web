@@ -3,7 +3,7 @@ const Role = require("../models/role.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const loginUser = async (req, res) => {
+const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -21,26 +21,24 @@ const loginUser = async (req, res) => {
       "secret",
       { expiresIn: "1h" }
     );
-    res.header("token", token).json({
+    // Cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+    });
+
+    // JWT
+    res.json({
       name: user.name,
       email: user.email,
       role: roles.role_name,
       token: token,
     });
+
+    next();
   } catch (error) {
     console.error("Error al encontrar el usuario:", error);
     res.status(500).json({ error: "Error al encontrar el usuario" });
   }
 };
 
-const logoutUser = (req, res) => {
-  try {
-    if (localStorage.key("data")) {
-      const data = localStorage.removeItem("data");
-      res.json(data);
-    }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
-module.exports = { loginUser, logoutUser };
+module.exports = { loginUser };
