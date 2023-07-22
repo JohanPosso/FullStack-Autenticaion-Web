@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const Photo = require("../models/photo.model");
 const User = require("../models/user.model");
+
 const uploadProfile = async (req, res) => {
   try {
     const filePath = path.join(__dirname, "../uploads", req.file.filename);
@@ -54,4 +55,36 @@ const downloadProfile = async (req, res) => {
   }
 };
 
-module.exports = { uploadProfile, downloadProfile };
+const uploadPhotoFeed = async (req, res) => {
+  try {
+    const filePath = path.join(__dirname, "../uploads", req.file.filename);
+
+    const params = {
+      Bucket: "node-images-upload",
+      Body: fs.createReadStream(filePath),
+      Key: "images/" + path.basename(filePath),
+      ACL: "public-read",
+    };
+
+    const s3 = new AWS.S3();
+    s3.upload(params, async function (err, data) {
+      try {
+        console.log("Uploaded in:", data.Location);
+        const findUser = await User.findOne({
+          where: { email: req.user.email },
+        });
+        await Photo.create({
+          ph_reference: data.Location,
+          UserId: findUser.id,
+        });
+        res.json({ message: "Foto cargada exitosamente" });
+      } catch (error) {
+        console.log("Error", err, error);
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { uploadProfile, downloadProfile, uploadPhotoFeed };

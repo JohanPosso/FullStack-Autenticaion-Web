@@ -42,4 +42,8 @@ const loginUser = async (req, res, next) => {
   }
 };
 
-module.exports = { loginUser };
+const logoutUser = (req, res) => {
+  res.cookie("token", "", { maxAge: 0 });
+  res.json("Cookie has been deleted!");
+};
+module.exports = { loginUser, logoutUser };

@@ -9,6 +9,7 @@ const allPhotoUser = require("../controllers/photoUser.controller");
 function allRoutes(app) {
   const router = require("express").Router();
   router.post("/token", loginController.loginUser);
+  router.post("/logout", loginController.logoutUser);
   router.post(
     "/crear",
     // tokenMiddleware,
@@ -23,6 +24,12 @@ function allRoutes(app) {
     tokenMiddleware,
     uploadFileMiddleware.single("profile"),
     uploadProfilePicture.uploadProfile
+  );
+  router.post(
+    "/uploadphotofeed", //Cargar fotos para el feed
+    tokenMiddleware,
+    uploadFileMiddleware.single("profile"),
+    uploadProfilePicture.uploadPhotoFeed
   );
   router.post(
     "/dowloadprofile",

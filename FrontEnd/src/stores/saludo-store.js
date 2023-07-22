@@ -8,7 +8,6 @@ export const useStateSaludo = defineStore("saludo", () => {
   const userRole = ref(null);
   const userToken = ref(null);
   const imgUrlProfile = ref(null);
-  const allphotoUser = ref(null);
 
   const loginUser = async (email, password) => {
     try {
@@ -66,30 +65,15 @@ export const useStateSaludo = defineStore("saludo", () => {
     }
   };
 
-  const allPhotos = async () => {
-    try {
-      const headers = {
-        headers: {
-          token: `Bearer ${userToken.value}`,
-        },
-      };
-      const response = await api.get("/allphoto", headers);
-      allphotoUser.value = response.data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return {
     loginUser,
     register,
     listaCards,
     dowloadprofile,
-    allPhotos,
+
     userName,
     userRole,
     userToken,
     imgUrlProfile,
-    allphotoUser,
   };
 });
