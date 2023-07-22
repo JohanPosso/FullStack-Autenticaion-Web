@@ -7,7 +7,6 @@ import {
 } from "vue-router";
 import routes from "./routes";
 import { LocalStorage } from "quasar";
-import { useStateSaludo } from "../stores/saludo-store";
 
 /*
  * If not building with SSR mode, you can
@@ -34,7 +33,6 @@ export default route(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
-  const userData = useStateSaludo();
 
   Router.beforeEach((to, from, next) => {
     const requiresAuth = to.matched.some((route) => route.meta.requiresAuth);

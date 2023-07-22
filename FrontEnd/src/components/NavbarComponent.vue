@@ -23,53 +23,46 @@
               label="Register"
             />
           </router-link>
-          <router-link to="/dashboard">
-            <q-btn
-              v-if="roleUser"
-              style="background: #a809e7; color: white"
-              label="Dashboard"
-            />
-          </router-link>
 
-          <q-btn round color="white">
-            <q-avatar size="28px">
-              <img src="https://cdn.quasar.dev/logo-v2/svg/logo.svg" />
-            </q-avatar>
-            <q-menu>
-              <div class="row no-wrap q-pa-sm">
-                <div class="column">
-                  <div class="text-h6 q-mb-md">Settings</div>
-                  <q-toggle
-                    @click="darkMode"
-                    v-model="darkmode"
-                    label="Dark Mode"
-                  />
-                  <q-toggle v-model="bluetooth" label="Bluetooth" />
-                </div>
-
-                <q-separator vertical inset class="q-mx-lg" />
-
-                <div class="column items-center">
-                  <q-avatar size="72px">
-                    <q-img :src="urlImage || '/profiledefault.png'"></q-img>
-                  </q-avatar>
-
-                  <div class="text-subtitle1 q-mt-md q-mb-xs">
-                    {{ tittleName }}
-                  </div>
-                  <router-link to="/login">
-                    <q-btn
-                      @click="logoutUser"
-                      color="negative"
-                      label="Logout"
-                      push
-                      size="sm"
-                    />
-                  </router-link>
-                </div>
+          <i
+            class="bx"
+            :class="'bx-user'"
+            style="font-size: 25px; cursor: pointer"
+          />
+          <q-menu>
+            <div class="row no-wrap q-pa-sm">
+              <div class="column">
+                <div class="text-h6 q-mb-md">Settings</div>
+                <q-toggle
+                  @click="darkMode"
+                  v-model="darkmode"
+                  label="Dark Mode"
+                />
+                <q-toggle v-model="bluetooth" label="Bluetooth" />
               </div>
-            </q-menu>
-          </q-btn>
+
+              <q-separator vertical inset class="q-mx-lg" />
+
+              <div class="column items-center">
+                <q-avatar size="72px">
+                  <q-img :src="urlImage || '/profiledefault.png'"></q-img>
+                </q-avatar>
+
+                <div class="text-subtitle1 q-mt-md q-mb-xs">
+                  {{ tittleName }}
+                </div>
+                <router-link to="/login">
+                  <q-btn
+                    @click="logoutUser"
+                    color="negative"
+                    label="Logout"
+                    push
+                    size="sm"
+                  />
+                </router-link>
+              </div>
+            </div>
+          </q-menu>
         </div>
       </q-toolbar>
     </q-header>
@@ -92,8 +85,13 @@ const userData = useStateSaludo();
 export default {
   name: "NavbarMenu",
   methods: {
-    logoutUser() {
-      LocalStorage.clear();
+    async logoutUser() {
+      try {
+        LocalStorage.clear();
+        await api.post("/logout");
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 

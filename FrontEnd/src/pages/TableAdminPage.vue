@@ -1,6 +1,7 @@
 <template>
   <NavbarMenu>
-    <div class="q-pa-md">
+    <div class="row q-pa-lg justify-center">
+      <SidebarMenuAkahon></SidebarMenuAkahon>
       <q-table
         title="Admin Dashboard"
         :rows="prueba()"
@@ -69,8 +70,9 @@ const columns = [
 
 import { api } from "src/boot/axios";
 import NavbarMenu from "../components/NavbarComponent.vue";
+import SidebarMenuAkahon from "src/components/Sidebar-menu-akahon.vue";
 export default {
-  components: { NavbarMenu },
+  components: { NavbarMenu, SidebarMenuAkahon },
   data() {
     return {
       columns,

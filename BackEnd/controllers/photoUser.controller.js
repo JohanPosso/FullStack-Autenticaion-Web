@@ -9,7 +9,16 @@ const allPhotoUser = async (req, res) => {
     const findAllPhoto = await Photo.findAll({
       where: { UserId: findAlaUser.id },
     });
-    res.json(findAllPhoto);
+    const elementos = [];
+    for (const key in findAllPhoto) {
+      elementos.push({
+        id_photo: findAllPhoto[key].dataValues.id_photo,
+        userCreator: findAlaUser.name,
+        ph_reference: findAllPhoto[key].dataValues.ph_reference,
+        createdAt: findAllPhoto[key].dataValues.createdAt,
+      });
+    }
+    res.json(elementos);
   } catch (error) {
     console.log(error);
   }
