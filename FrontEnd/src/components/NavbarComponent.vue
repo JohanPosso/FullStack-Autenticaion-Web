@@ -80,7 +80,6 @@ import { computed, ref } from "vue";
 import { useStateSaludo } from "src/stores/saludo-store";
 
 const userData = useStateSaludo();
-// userData?.dowloadprofile();
 
 export default {
   name: "NavbarMenu",
