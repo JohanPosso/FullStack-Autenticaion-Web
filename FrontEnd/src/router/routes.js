@@ -33,6 +33,16 @@ const routes = [
     component: () => import("pages/PruebaPage.vue"),
     meta: { requiresAuth: true, roles: ["admin"] },
   },
+  {
+    path: "/edit-profile",
+    component: () => import("pages/UserProfilePage.vue"),
+    meta: { requiresAuth: true, roles: ["admin", "user"] },
+  },
+  {
+    path: "/upload-image",
+    component: () => import("pages/UploadImageFeedPage.vue"),
+    meta: { requiresAuth: true, roles: ["admin", "user"] },
+  },
 
   {
     path: "/:catchAll(.*)*",

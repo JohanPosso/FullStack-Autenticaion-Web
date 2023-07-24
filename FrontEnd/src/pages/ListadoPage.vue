@@ -60,7 +60,6 @@ import SidebarMenuAkahon from "src/components/Sidebar-menu-akahon.vue";
 import CardComponent from "../components/CardComponent.vue";
 import { computed, ref } from "vue";
 import { useStatePhotos } from "src/stores/photo-store";
-import { data } from "autoprefixer";
 const userData = useStateSaludo();
 export default {
   components: { NavbarMenu, SidebarMenuAkahon, CardComponent },
@@ -86,24 +85,7 @@ export default {
     const allPhotosJohan = ref(null);
     return {
       allPhotosJohan,
-      // productList: [
-      //   // Aquí puedes definir los datos de tus productos, por ejemplo:
-      //   { name: "Producto 1", price: 10 },
-      //   { name: "Producto 2", price: 15 },
-      //   { name: "Producto 2", price: 15 },
-      //   { name: "Producto 2", price: 15 },
-      //   { name: "Producto 2", price: 15 },
-      //   { name: "Producto 2", price: 15 },
-      //   { name: "Producto 2", price: 15 },
-      //   // ...
-      // ],
     };
-  },
-
-  computed: {
-    photoList() {
-      return null;
-    },
   },
 };
 </script>

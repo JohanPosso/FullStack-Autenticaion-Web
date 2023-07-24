@@ -74,15 +74,29 @@
 </template>
 
 <script>
-import { LocalStorage, Dark } from "quasar";
+import { LocalStorage, Dark, Notify, Cookies } from "quasar";
 import { api } from "src/boot/axios";
 import { computed, ref } from "vue";
 import { useStateSaludo } from "src/stores/saludo-store";
 
 const userData = useStateSaludo();
-
+const expireToken = LocalStorage.getItem("data");
 export default {
   name: "NavbarMenu",
+  created() {
+    if (expireToken.expiresIn * 1000 < Date.now()) {
+      // El token ha expirado
+      Notify.create({
+        type: "negative",
+        timeout: 6000,
+        message: "Su sesión ha expirado",
+      });
+      LocalStorage.clear();
+      Cookies.remove("token");
+
+      this.$router.push("/login");
+    }
+  },
   methods: {
     async logoutUser() {
       try {
@@ -115,11 +129,6 @@ export default {
         this.darkmode ? Dark.set(true) : Dark.set(false);
         LocalStorage.set("darkmode", this.darkmode);
       };
-    },
-    prueba() {
-      const nombre = localStorage.getItem("nombre");
-
-      return null;
     },
   },
 };

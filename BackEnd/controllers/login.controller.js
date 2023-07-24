@@ -6,7 +6,6 @@ const bcrypt = require("bcrypt");
 const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-
     const user = await User.findOne({ where: { email } });
     const roles = await Role.findOne({ where: { id_role: user.RoleIdRole } });
     const desCryptPassword = bcrypt.compareSync(password, user.password);
@@ -26,13 +25,20 @@ const loginUser = async (req, res, next) => {
       httpOnly: true,
       maxAge: 3600000,
     });
+    const decode = jwt.verify(token, "secret");
 
     // JWT
     res.json({
+      type_identification: user.type_identification,
+      identification: user.identification,
       name: user.name,
+      lastname: user.lastname,
       email: user.email,
+      phone: user.phone,
+      ocupation: user.ocupation,
       role: roles.role_name,
       token: token,
+      expiresIn: decode.exp,
     });
 
     next();
