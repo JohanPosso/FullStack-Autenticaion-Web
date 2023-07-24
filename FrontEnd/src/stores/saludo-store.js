@@ -7,6 +7,7 @@ export const useStateSaludo = defineStore("saludo", () => {
   const userName = ref(null);
   const userRole = ref(null);
   const userToken = ref(null);
+  const userData = ref(null);
   const imgUrlProfile = ref(null);
 
   const loginUser = async (email, password) => {
@@ -19,9 +20,11 @@ export const useStateSaludo = defineStore("saludo", () => {
       LocalStorage.set("name", token.data.name);
       LocalStorage.set("token", token.data.token);
       LocalStorage.set("role", token.data.role);
+      LocalStorage.set("data", token.data);
       userName.value = LocalStorage.getItem("name");
       userRole.value = LocalStorage.getItem("role");
       userToken.value = LocalStorage.getItem("token");
+      userData.value = LocalStorage.getItem("data");
       dowloadprofile();
     } catch (error) {
       console.log(error);
@@ -75,5 +78,6 @@ export const useStateSaludo = defineStore("saludo", () => {
     userRole,
     userToken,
     imgUrlProfile,
+    userData,
   };
 });

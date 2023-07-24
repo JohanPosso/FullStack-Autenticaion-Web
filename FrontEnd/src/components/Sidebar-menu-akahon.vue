@@ -116,16 +116,16 @@ export default {
           icon: "bx-grid-alt",
         },
         {
-          link: "#",
+          link: "/edit-profile",
           name: "User",
           tooltip: "User",
           icon: "bx-user",
         },
         {
-          link: "#",
-          name: "Messages",
-          tooltip: "Messages",
-          icon: "bx-chat",
+          link: "/upload-image",
+          name: "Upload",
+          tooltip: "Upload",
+          icon: "bx-upload",
         },
 
         {

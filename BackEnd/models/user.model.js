@@ -7,9 +7,21 @@ const User = sequelize.define("User", {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
+  },
+  type_identification: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  identification: {
+    type: DataTypes.STRING,
+    allowNull: false,
     unique: true,
   },
   name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  lastname: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -21,7 +33,11 @@ const User = sequelize.define("User", {
       isEmail: true,
     },
   },
-  imgProfile: {
+  phone: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  ocupation: {
     type: DataTypes.STRING,
     allowNull: true,
   },

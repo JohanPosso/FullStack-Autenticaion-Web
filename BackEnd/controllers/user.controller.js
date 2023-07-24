@@ -1,8 +1,17 @@
 const User = require("../models/user.model");
+const Role = require("../models/role.model");
 const bcrypt = require("bcrypt");
 
 const createUser = (req, res) => {
-  let { name, email, role, password } = req.body;
+  let {
+    type_identification,
+    identification,
+    name,
+    lastname,
+    email,
+    role,
+    password,
+  } = req.body;
   const passwordCrypt = bcrypt.hashSync(password, 10); // Cifrar el password
 
   switch (role) {
@@ -18,8 +27,13 @@ const createUser = (req, res) => {
   }
 
   const createUser = User.create({
+    type_identification,
+    identification,
     name,
+    lastname,
     email,
+    phone,
+    ocupation,
     RoleIdRole: role,
     password: passwordCrypt,
   })
@@ -73,4 +87,5 @@ const editUser = async (req, res) => {
     console.log(error);
   }
 };
+
 module.exports = { createUser, saludo, deleteUser, editUser };
