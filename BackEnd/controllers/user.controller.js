@@ -9,9 +9,23 @@ const createUser = (req, res) => {
     name,
     lastname,
     email,
+    phone,
     role,
+    ocupation,
     password,
   } = req.body;
+  console.log(
+    type_identification,
+    identification,
+    name,
+    lastname,
+    email,
+    phone,
+    role,
+    ocupation,
+    password,
+    "yyyyyyy"
+  );
   const passwordCrypt = bcrypt.hashSync(password, 10); // Cifrar el password
 
   switch (role) {

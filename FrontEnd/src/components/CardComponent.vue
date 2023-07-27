@@ -8,7 +8,6 @@ export default {
   computed: {
     photoList() {
       userData.allPhotos();
-      console.log(userData.allphotoUser, "johan");
       return null;
     },
   },
@@ -126,6 +125,7 @@ body {
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
   padding: 16px 24px 24px 24px;
+  visibility: visible;
 }
 
 .card__category {

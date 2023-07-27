@@ -25,18 +25,33 @@ export const useStateSaludo = defineStore("saludo", () => {
       userRole.value = LocalStorage.getItem("role");
       userToken.value = LocalStorage.getItem("token");
       userData.value = LocalStorage.getItem("data");
-      dowloadprofile();
+      // dowloadprofile();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const register = async (name, email, role, password) => {
+  const register = async (
+    type_identification,
+    identification,
+    name,
+    lastname,
+    email,
+    phone,
+    role,
+    ocupation,
+    password
+  ) => {
     try {
       const result = await api.post("/crear", {
+        type_identification,
+        identification,
         name,
+        lastname,
         email,
+        phone,
         role,
+        ocupation,
         password,
       });
       console.log(result.data);

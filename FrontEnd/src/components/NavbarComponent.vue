@@ -84,6 +84,8 @@ const expireToken = LocalStorage.getItem("data");
 export default {
   name: "NavbarMenu",
   created() {
+    // userData.dowloadprofile();
+
     if (expireToken.expiresIn * 1000 < Date.now()) {
       // El token ha expirado
       Notify.create({
@@ -119,6 +121,8 @@ export default {
     },
 
     urlImage() {
+      // userData.dowloadprofile();
+
       const profilePicture = computed(() =>
         LocalStorage.getItem("profileuser")
       );
