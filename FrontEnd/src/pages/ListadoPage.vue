@@ -1,25 +1,32 @@
 <template>
   <NavbarMenu>
-    <div class="row q-pa-lg justify-center">
+    <div class="row q-pa-lg justify-center" style="margin-top: 85rem">
       <SidebarMenuAkahon> </SidebarMenuAkahon>
       <q-row class="row q-gutter-lg justify-center">
         <q-col
-          v-for="data in allPhotosJohan"
+          v-for="(data, index) in allPhotosJohan"
           :key="data.id_photo"
           cols="6"
           md="4"
         >
           <CardComponent>
-            <div class="cards">
+            <div class="cards" style="min-height: 15rem">
               <article class="card card--1">
-                <q-img :src="data.ph_reference" width="100%" alt="" />
+                <q-img
+                  :src="data.ph_reference"
+                  width="100%"
+                  style="position: absolute"
+                  alt=""
+                />
 
                 <a href="#" class="card_link">
                   <div class="card__img--hover"></div>
                 </a>
                 <div class="card__info">
                   <q-rating
-                    v-model="model3"
+                    v-model="likes[index]"
+                    :key="data.id_photo"
+                    :data-set="data.id_photo"
                     max="1"
                     size="2em"
                     color="red"
@@ -28,17 +35,14 @@
                     icon-selected="favorite"
                     icon-half="favorite"
                     no-dimming
+                    @click="saveLikesToLocalStorage"
                   />
-                  <br />
 
                   <!-- Tiempo Icon -->
-                  <span class="material-symbols-outlined"> delete </span>
+
                   <!-- Editar Icon -->
-                  <span class="card__by"
-                    >by
-                    <a href="#" class="card__author" title="author">{{
-                      data.userCreator
-                    }}</a></span
+                  <i style="font-size: 2em" class="icon-delete material-icons"
+                    >delete</i
                   >
                 </div>
               </article>
@@ -72,7 +76,6 @@ export default {
           },
         };
         const photos = await api.get("/allphoto", headers);
-        console.log(photos.data);
         this.allPhotosJohan = photos.data;
       } catch (error) {
         console.log(error);
@@ -83,9 +86,34 @@ export default {
   },
   data() {
     const allPhotosJohan = ref(null);
+    const likes = ref([]);
+    const storedLikes = LocalStorage.getItem("likes");
+    if (storedLikes) {
+      likes.value = JSON.parse(storedLikes);
+    }
+    // Método para guardar el estado de "me gusta" en el LocalStorage
+    const saveLikesToLocalStorage = () => {
+      LocalStorage.set("likes", JSON.stringify(likes.value));
+    };
     return {
       allPhotosJohan,
+      likes,
+      saveLikesToLocalStorage,
     };
+  },
+  watch: {
+    // Guardar el estado de "me gusta" en el LocalStorage cuando cambie
+    likes: "saveLikesToLocalStorage",
   },
 };
 </script>
+
+<style scoped>
+.icon-delete {
+  visibility: hidden;
+}
+
+.cards :hover .icon-delete {
+  visibility: visible;
+}
+</style>

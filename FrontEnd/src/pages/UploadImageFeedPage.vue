@@ -31,16 +31,13 @@
                 style="height: 46rem; margin-top: -29rem"
                 class="sizeupload"
                 type="file"
+                id="fileInput"
                 ref="fileInput"
                 @change="handleFileInput"
               />
             </div>
             <!-- Arrastre -->
-
-            <q-btn type="button" class="btn" @change="handleFileInput">
-              Choose image
-            </q-btn>
-            <!-- <input type="file" id="fileElem" multiple accept="image/*" /> -->
+            <label for="fileInput">Subir Imagen</label>
           </div>
         </form>
         <div id="gallery"></div>
@@ -54,6 +51,8 @@ import NavbarComponent from "src/components/NavbarComponent.vue";
 import SidebarMenuAkahon from "src/components/Sidebar-menu-akahon.vue";
 import { LocalStorage, Notify } from "quasar";
 import { api } from "src/boot/axios";
+import { useStateSaludo } from "src/stores/saludo-store";
+const userData = useStateSaludo();
 export default {
   components: { NavbarComponent, SidebarMenuAkahon },
   data() {
@@ -87,9 +86,11 @@ export default {
         if (response.status === 200) {
           Notify.create({
             type: "positive",
-            timeout: 2000,
+            timeout: 3000,
             message: "Imagen subida exitosamente!",
           });
+          //   this.$router.push("/listado");
+          userData.dowloadprofile();
         } else {
           Notify.create({
             type: "negative",
@@ -127,6 +128,15 @@ body {
   width: 100vw;
   background-image: linear-gradient(0deg, #ebfcff 0%, #ffffff 89%);
   font-family: Roboto, sans-serif;
+}
+label {
+  background-color: indigo;
+  color: white;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  margin-top: 1rem;
 }
 .sizeupload {
   z-index: 50000000000;
